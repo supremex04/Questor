@@ -13,6 +13,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.tools.tavily_search import TavilySearchResults
 from typing_extensions import TypedDict
 from typing import List
+from langgraph.graph import END, StateGraph
+
 
 embed_model = FastEmbedEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
@@ -21,10 +23,8 @@ embed_model = FastEmbedEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 os.environ["GOOGLE_API_KEY"]="AIzaSyA7PN41FYdh86uuxvW4kKW5_YdvsHXb8ds"
 llm = ChatGoogleGenerativeAI(model="gemini-pro")
 
-# Commented out IPython magic to ensure Python compatibility.
-# %pip install -U langchain-anthropic
 
-llm = ChatAnthropic(model='claude-3-opus-20240229')
+
 
 os.environ['LANGCHAIN_TRACING-V2']='true'
 os.environ['LANGCHAIN_ENDPOINT']='https://api.smith.langchain.com'
@@ -173,15 +173,6 @@ class GraphState(TypedDict):
 
 from langchain.schema import Document
 def retrieve(state):
-    """
-    Retrieve documents from vectorstore
-
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        state (dict): New key added to state, documents, that contains retrieved documents
-    """
     print("---RETRIEVE---")
     question = state["question"]
 
@@ -190,15 +181,7 @@ def retrieve(state):
     return {"documents": documents, "question": question}
 #
 def generate(state):
-    """
-    Generate answer using RAG on retrieved documents
 
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        state (dict): New key added to state, generation, that contains LLM generation
-    """
     print("---GENERATE---")
     question = state["question"]
     documents = state["documents"]
@@ -208,16 +191,6 @@ def generate(state):
     return {"documents": documents, "question": question, "generation": generation}
 #
 def grade_documents(state):
-    """
-    Determines whether the retrieved documents are relevant to the question
-    If any document is not relevant, we will set a flag to run web search
-
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        state (dict): Filtered out irrelevant documents and updated web_search state
-    """
 
     print("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
     question = state["question"]
@@ -243,15 +216,6 @@ def grade_documents(state):
     return {"documents": filtered_docs, "question": question, "web_search": web_search}
 #
 def web_search(state):
-    """
-    Web search based based on the question
-
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        state (dict): Appended web results to documents
-    """
 
     print("---WEB SEARCH---")
     question = state["question"]
@@ -269,15 +233,6 @@ def web_search(state):
 
 # conditional edges
 def route_question(state):
-    """
-    Route question to web search or RAG.
-
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        str: Next node to call
-    """
 
     print("---ROUTE QUESTION---")
     question = state["question"]
@@ -294,15 +249,6 @@ def route_question(state):
         return "vectorstore"
 
 def decide_to_generate(state):
-    """
-    Determines whether to generate an answer, or add web search
-
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        str: Binary decision for next node to call
-    """
 
     print("---ASSESS GRADED DOCUMENTS---")
     question = state["question"]
@@ -320,15 +266,6 @@ def decide_to_generate(state):
         return "generate"
 
 def grade_generation_v_documents_and_question(state):
-    """
-    Determines whether the generation is grounded in the document and answers question.
-
-    Args:
-        state (dict): The current graph state
-
-    Returns:
-        str: Decision for next node to call
-    """
 
     print("---CHECK HALLUCINATIONS---")
     question = state["question"]
@@ -356,7 +293,6 @@ def grade_generation_v_documents_and_question(state):
         return "not supported"
 
 # adding notes
-from langgraph.graph import END, StateGraph
 workflow = StateGraph(GraphState)
 
 # Define the nodes
