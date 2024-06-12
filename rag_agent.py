@@ -62,13 +62,13 @@ prompt = PromptTemplate(
 )
 start = time.time()
 question_router = prompt | llm | JsonOutputParser()
-question = "covid 19 deaths in nepal"
-docs = retriever.invoke(question)
-print(question_router.invoke({"question": question,"document":docs}))
-end = time.time()
-print(f"The time required to generate response by Router Chain in seconds:{end - start}")
+# question = "covid 19 deaths in nepal"
+# docs = retriever.invoke(question)
+# print(question_router.invoke({"question": question,"document":docs}))
+# end = time.time()
+# print(f"The time required to generate response by Router Chain in seconds:{end - start}")
 
-docs[1].page_content
+# docs[1].page_content
 
 # generation
 prompt = PromptTemplate(
@@ -88,14 +88,14 @@ def format_docs(docs):
 # Chain
 start = time.time()
 rag_chain = prompt | llm | StrOutputParser()
-question = "different types of human memory"
-docs = retriever.invoke(question)
-generation = rag_chain.invoke({"context":docs,"question": question})
-print(generation)
-end = time.time()
-print(f"The time required to generate response by Router Chain in seconds:{end - start}")
+# question = "different types of human memory"
+# docs = retriever.invoke(question)
+# generation = rag_chain.invoke({"context":docs,"question": question})
+# print(generation)
+# end = time.time()
+# print(f"The time required to generate response by Router Chain in seconds:{end - start}")
 
-docs
+# docs
 
 # retrieval grader
 prompt = PromptTemplate(
@@ -112,12 +112,12 @@ prompt = PromptTemplate(
 )
 start = time.time()
 retrieval_grader = prompt | llm | JsonOutputParser()
-question = "how the human brain works?"
-docs = retriever.invoke(question)
-doc_txt = docs[1].page_content
-print(retrieval_grader.invoke({"question": question, "document": doc_txt}))
-end = time.time()
-print(f"The time required to generate response by the retrieval grader in seconds:{end - start}")
+# question = "how the human brain works?"
+# docs = retriever.invoke(question)
+# doc_txt = docs[1].page_content
+# print(retrieval_grader.invoke({"question": question, "document": doc_txt}))
+# end = time.time()
+# print(f"The time required to generate response by the retrieval grader in seconds:{end - start}")
 
 # hallucination grader
 prompt = PromptTemplate(
@@ -134,10 +134,10 @@ prompt = PromptTemplate(
 )
 start = time.time()
 hallucination_grader = prompt | llm | JsonOutputParser()
-hallucination_grader_response = hallucination_grader.invoke({"documents": docs, "generation": generation})
-end = time.time()
-print(f"The time required to generate response by the generation chain in seconds:{end - start}")
-print(hallucination_grader_response)
+# hallucination_grader_response = hallucination_grader.invoke({"documents": docs, "generation": generation})
+# end = time.time()
+# print(f"The time required to generate response by the generation chain in seconds:{end - start}")
+# print(hallucination_grader_response)
 
 # answer grader
 prompt = PromptTemplate(
@@ -153,10 +153,10 @@ prompt = PromptTemplate(
 )
 start = time.time()
 answer_grader = prompt | llm | JsonOutputParser()
-answer_grader_response = answer_grader.invoke({"question": question,"generation": generation})
-end = time.time()
-print(f"The time required to generate response by the answer grader in seconds:{end - start}")
-print(answer_grader_response)
+# answer_grader_response = answer_grader.invoke({"question": question,"generation": generation})
+# end = time.time()
+# print(f"The time required to generate response by the answer grader in seconds:{end - start}")
+# print(answer_grader_response)
 
 # web search
 
