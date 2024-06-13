@@ -4,6 +4,7 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 import time
 from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv 
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.output_parsers import StrOutputParser
 import os
@@ -13,13 +14,14 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from typing_extensions import TypedDict
 from typing import List
 from langgraph.graph import END, StateGraph
+load_dotenv()
 
 
 embed_model = FastEmbedEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
 # Commented out IPython magic to ensure Python compatibility.
 # %pip3 install --upgrade --quiet  langchain-google-genai pillow
-os.environ["GOOGLE_API_KEY"]="AIzaSyA7PN41FYdh86uuxvW4kKW5_YdvsHXb8ds"
+os.environ["GOOGLE_API_KEY"]=os.getenv("GOOGLE_API_KEY")
 llm = ChatGoogleGenerativeAI(model="gemini-pro")
 
 
@@ -27,8 +29,8 @@ llm = ChatGoogleGenerativeAI(model="gemini-pro")
 
 os.environ['LANGCHAIN_TRACING-V2']='true'
 os.environ['LANGCHAIN_ENDPOINT']='https://api.smith.langchain.com'
-os.environ['LANGCHAIN_API_KEY']='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'
-os.environ['ANTHROPIC_API_KEY']='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'
+os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")
+os.environ['ANTHROPIC_API_KEY'] = os.getenv("ANTHROPIC_API_KEY")
 
 urls = [
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8060478/#:~:text=It%20has%20recorded%20its%20highest,at%20the%20end%20of%20lockdown."
@@ -159,7 +161,7 @@ answer_grader = prompt | llm | JsonOutputParser()
 
 # web search
 
-os.environ['TAVILY_API_KEY'] = "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"
+os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 web_search_tool = TavilySearchResults(k=3)
 
 ### State
