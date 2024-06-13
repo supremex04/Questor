@@ -331,7 +331,7 @@ workflow.add_conditional_edges(
 app = workflow.compile()
 
 from pprint import pprint
-inputs = {"question":"lockdown duration in nepal"}
+inputs = {"question":"loss in capital due to covid in nepal"}
 for output in app.stream(inputs):
     for key, value in output.items():
         pprint(f"Finished running: {key}:")

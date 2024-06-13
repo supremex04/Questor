@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import Chroma
@@ -18,6 +19,7 @@ from langgraph.graph import END, StateGraph
 
 embed_model = FastEmbedEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 server_app = Flask(__name__)
+CORS(server_app) 
 
 # Commented out IPython magic to ensure Python compatibility.
 # %pip3 install --upgrade --quiet  langchain-google-genai pillow
@@ -341,6 +343,7 @@ def query():
     for output in app.stream(inputs):
         for key, value in output.items():
             pprint(f"Finished running: {key}:")
+    pprint(value["generation"])
     return jsonify({"generation": value["generation"]})
     
 if __name__ == "__main__":
