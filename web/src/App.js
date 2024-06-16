@@ -1,5 +1,5 @@
 import './App.css';
-import QueryComponent from './components/query';
+import QueryComponent from './components/Query';
 function App() {
   return (
     <div className="App">
