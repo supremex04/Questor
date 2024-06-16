@@ -9,7 +9,7 @@ const Answer = ({ answer, loading }) => {
                     <p>{answer}</p>
                 </div>
             )}
-            {loading && <p>Loading...</p>}
+            {loading && <div className="loader"></div>}
         </div>
     );
 };

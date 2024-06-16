@@ -36,7 +36,7 @@ const Search = ({ setAnswer, setLoading }) => {
                     name="question"
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    className="w-full py-3 px-4 bg-gray-700 border border-gray-600 rounded-2xl text-white focus:outline-none focus:border-blue-500 resize-none overflow-hidden"
+                    className="w-full py-3 px-4 bg-gray-700 border border-gray-600 rounded-3xl text-white focus:outline-none focus:border-blue-500 resize-none overflow-hidden"
                     autoComplete="off"
                     rows="1"
                     style={{ minHeight: '3rem', lineHeight: '1.5rem' }}

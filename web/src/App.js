@@ -1,4 +1,5 @@
 import './App.css';
+import './assets/loading.css'
 import QueryComponent from './components/Query';
 function App() {
   return (

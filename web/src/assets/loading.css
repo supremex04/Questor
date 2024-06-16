@@ -1,0 +1,21 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 85px;
+    height: 50px;
+    --g1:conic-gradient(from  90deg at left   3px top   3px,#0000 90deg,#fff 0);
+    --g2:conic-gradient(from -90deg at bottom 3px right 3px,#0000 90deg,#fff 0);
+    background: var(--g1),var(--g1),var(--g1), var(--g2),var(--g2),var(--g2);
+    background-position: left,center,right;
+    background-repeat: no-repeat;
+    animation: l10 1s infinite alternate;
+  }
+  @keyframes l10 {
+    0%,
+    2%   {background-size:25px 50% ,25px 50% ,25px 50%}
+    20%  {background-size:25px 25% ,25px 50% ,25px 50%}
+    40%  {background-size:25px 100%,25px 25% ,25px 50%}
+    60%  {background-size:25px 50% ,25px 100%,25px 25%}
+    80%  {background-size:25px 50% ,25px 50% ,25px 100%}
+    98%,
+    100% {background-size:25px 50% ,25px 50% ,25px 50%}
+  }
