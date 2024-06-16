@@ -22,25 +22,33 @@ const QueryComponent = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Question:
-                    <input
-                        type="text"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                    />
-                </label>
-                <button type="submit">Submit</button>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+            <div className="flex flex-col items-center justify-center w-full max-w-3xl p-6 space-y-6">
+                {answer && (
+                    <div className="bg-gray-800 p-4 rounded-2xl shadow-lg w-full">
+                        <h3 className="text-lg font-semibold">Answer:</h3>
+                        <p>{answer}</p>
+                    </div>
+                )}
+                {loading && <p>Loading...</p>}
+            </div>
+            <form onSubmit={handleSubmit} className="w-full max-w-3xl p-6 fixed bottom-10 flex items-center space-x-2">
+                <input
+                    type="text"
+                    id="question"
+                    name="question"
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    className="flex-grow py-3 px-4 bg-gray-700 border border-gray-600 rounded-full text-white focus:outline-none focus:border-blue-500"
+                    autoComplete="off"
+                />
+                <button
+                    type="submit"
+                    className="py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-full transition duration-200"
+                >
+                    Submit
+                </button>
             </form>
-            {loading && <p>Loading...</p>}
-            {answer && (
-                <div>
-                    <h3>Answer:</h3>
-                    <p>{answer}</p>
-                </div>
-            )}
         </div>
     );
 };
