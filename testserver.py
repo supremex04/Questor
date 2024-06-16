@@ -11,6 +11,9 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.graph import END, StateGraph
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain.schema import Document
+
 
 from llama_index.llms.groq import Groq
 from llama_index.core import Settings
@@ -38,20 +41,18 @@ CORS(server_app)
 
 
 nest_asyncio.apply()
-os.environ['LLAMA_PARSE_API_KEY']="xxxxxxxxxxx"
+os.environ['LLAMA_PARSE_API_KEY']=os.getenv("LLAMA_API_KEY")
 
 from llama_parse import LlamaParse
-llama_parse_documents = LlamaParse(api_key="xxxxxxxxx", result_type="markdown").load_data("downloaded filespaths as list.pdf")
-
-os.environ["GROQ_API_KEY"]='xxxxxxxxxx'
-llm1 = Groq(model="mixtral-8x7b-32768", api_key="xxxxxxxxxx")
+llama_parse_documents = LlamaParse(api_key="llx-yqGH4AK4KAkHRznQawJUtTKJSzqqPm1sPEzdNcD6hwP3Hi5A", result_type="markdown").load_data("./context/legal/Constitution-of-Nepal.pdf")
+os.environ["GROQ_API_KEY"]=os.getenv("GROQ_API_KEY")
+llm1 = Groq(model="mixtral-8x7b-32768", api_key="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")
 
 Settings.llm=llm1
 Settings.embed_model=embed_model
-
 client = qdrant_client.QdrantClient(
-    "qdrant_storage_link",
-    api_key="xxxxxxxxx",
+    "https://b28f151a-b950-461a-92ba-8094252908b9.us-east4-0.gcp.cloud.qdrant.io",
+    api_key="uzAglhqPvRBcKmTfSbZeUI7WVve6vB-1lRMrCHbU9bGj4ViryKF11w",
 )
 
 vector_store = QdrantVectorStore(client=client, collection_name="legal_documents")
@@ -62,14 +63,14 @@ retriever = index.as_retriever(search_kwargs={"k":3})
 
 os.environ['LANGCHAIN_TRACING-V2']='true'
 os.environ['LANGCHAIN_ENDPOINT']='https://api.smith.langchain.com'
-os.environ['LANGCHAIN_API_KEY']='xxxxxxxxx'
+os.environ['LANGCHAIN_API_KEY']=os.getenv("LANGCHAIN_API_KEY")
 
 #%pip install -qU langchain-groq
 
 llm = ChatGroq(
     temperature=0,
     model="mixtral-8x7b-32768",
-    api_key="xxxxxxxxxx"
+    api_key="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"
 )
 
 # generation
@@ -117,7 +118,7 @@ end = time.time()
 print(f"The time required to generate response by the answer grader in seconds:{end - start}")
 print(answer_grader_response)
 
-os.environ['TAVILY_API_KEY'] = "xxxxxxxxxxx"
+os.environ['TAVILY_API_KEY'] =os.getenv("TAVILY_API_KEY")
 web_search_tool = TavilySearchResults(k=3)
 
 class GraphState(TypedDict):
@@ -185,9 +186,17 @@ workflow.set_finish_point("generate")
 
 app = workflow.compile()
 
-from pprint import pprint
-inputs = {"question":"how blood pressure level varies with ages."}
-for output in app.stream(inputs):
-    for key, value in output.items():
-        pprint(f"Finished running: {key}:")
-pprint(value["generation"])
+@server_app.route('/query', methods=['POST'])
+def query():
+    data = request.json
+    question = data['question']
+    inputs = {"question": question}
+    output = None
+    for output in app.stream(inputs):
+        for key, value in output.items():
+            pprint(f"Finished running: {key}:")
+    pprint(value["generation"])
+    return jsonify({"generation": value["generation"]})
+    
+if __name__ == "__main__":
+    server_app.run(debug=True)

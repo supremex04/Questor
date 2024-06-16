@@ -1,0 +1,29 @@
+# Core dependencies
+flask
+flask-cors
+python-dotenv
+nest-asyncio
+
+# LangChain and related libraries
+langchain-nomic
+langchain_community
+tiktoken
+langchainhub
+langchain
+langgraph
+tavily-python
+llama-index
+llama-parse
+llama-index-llms-groq
+llama-index-embeddings-fastembed
+llama-index-vector-stores-qdrant
+qdrant-client
+
+# Google and gRPC libraries
+protobuf==3.20.1
+google-api-python-client==2.44.0
+google-cloud-storage==2.5.0
+grpcio==1.44.0
+
+# Other dependencies
+typing-extensions
