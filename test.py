@@ -40,7 +40,7 @@ os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 
 # Initialize LlamaParse with API key and load documents
 from llama_parse import LlamaParse
-llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data("./context/medilens/cardio_vascular.pdf")
+# llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf", "./context/medilens/cardiology-explained.pdf"])
 
 # Initialize Groq model
 llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
@@ -56,12 +56,12 @@ client = qdrant_client.QdrantClient(
 )
 
 # Initialize vector store and storage context
-vector_store = QdrantVectorStore(client=client, collection_name="legal_documents")
+vector_store = QdrantVectorStore(client=client, collection_name="health_documents")
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
 # Build index from documents
-index = VectorStoreIndex.from_documents(documents=llama_parse_documents, storage_context=storage_context, show_progress=True)
-
+# index = VectorStoreIndex.from_documents(documents=llama_parse_documents, storage_context=storage_context, show_progress=True)
+index= VectorStoreIndex.from_vector_store(vector_store=vector_store)
 # Initialize retriever with k=3 for search
 retriever = index.as_retriever(search_kwargs={"k": 3})
 
@@ -115,6 +115,7 @@ class GraphState(TypedDict):
     generation: str
     web_search: str
     documents: List[str]
+    urls: List[str]
 
 # Define generate function for StateGraph
 def generate(state):
@@ -138,6 +139,7 @@ def generate(state):
     print("DOING WEB SEARCH")
     while score['score'] == 'no':
         try:
+            urls = []
             docs = web_search_tool.invoke({"query": question})
             if docs:
                 web_results = "\n".join([d["content"] for d in docs])
@@ -146,7 +148,7 @@ def generate(state):
                     documents.append(web_results)
                 else:
                     documents = [web_results]
-                urls.extend([d["url"] for d in docs])
+                urls.extend(d["url"] for d in docs)
                 generation = rag_chain.invoke({"context": format_docs(documents), "question": question})
                 print("GENERATING FROM WEB_SEARCH")
 
