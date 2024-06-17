@@ -3,13 +3,17 @@ import Search from './Search';
 import Answer from './Answer';
 
 const QueryComponent = () => {
-    const [answer, setAnswer] = useState('');
+    const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const addHistory = (question, answer) => {
+        setHistory((prevHistory) => [...prevHistory, { question, answer }]);
+    };
+
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
-            <Answer answer={answer} loading={loading} />
-            <Search setAnswer={setAnswer} setLoading={setLoading} />
+        <div className="min-h-screen flex flex-col items-center justify-start bg-gray-900 text-white p-4 space-y-6">
+            <Search addHistory={addHistory} setLoading={setLoading} />
+            <Answer history={history} loading={loading} />
         </div>
     );
 };

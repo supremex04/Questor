@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
-const Search = ({ setAnswer, setLoading }) => {
+const Search = ({ addHistory, setLoading }) => {
     const [question, setQuestion] = useState('');
     const textareaRef = useRef(null);
 
@@ -15,20 +15,21 @@ const Search = ({ setAnswer, setLoading }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setAnswer('');
         try {
             const response = await axios.post('http://localhost:5000/query', { question });
-            setAnswer(response.data.generation);
+            const answer = response.data.generation;
+            addHistory(question, answer);
         } catch (error) {
             console.error("There was an error submitting the question!", error);
-            setAnswer('There was an error processing your request. Please try again.');
+            addHistory(question, 'There was an error processing your request. Please try again.');
         } finally {
             setLoading(false);
         }
+        setQuestion('');
     };
 
     return (
-        <div className="fixed bottom-20 w-full flex justify-center px-4">
+        <div className="w-full flex justify-center px-4">
             <form onSubmit={handleSubmit} className="w-full max-w-3xl flex space-x-4">
                 <textarea
                     ref={textareaRef}
@@ -43,7 +44,7 @@ const Search = ({ setAnswer, setLoading }) => {
                 />
                 <button
                     type="submit"
-                    className="h-12 py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-full transition duration-200"
+                    className="h-12 py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-full transition transform hover:scale-105 duration-200"
                     style={{ alignSelf: 'flex-start' }}
                 >
                     Submit
