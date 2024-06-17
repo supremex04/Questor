@@ -5,7 +5,7 @@ const Answer = ({ answer, loading }) => {
         <div className="flex flex-col items-center justify-center w-full max-w-3xl p-6 space-y-6">
             {answer && (
                 <div className="bg-gray-800 p-4 rounded-2xl shadow-lg w-full">
-                    <h3 className="text-lg font-semibold">answer:</h3>
+                    <h3 className="text-lg font-semibold">Answer:</h3>
                     <p>{answer}</p>
                 </div>
             )}
