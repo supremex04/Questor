@@ -40,7 +40,7 @@ os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 
 # Initialize LlamaParse with API key and load documents
 from llama_parse import LlamaParse
-llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data("./context/medilens/cardio_vascular.pdf")
+# llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf", "./context/medilens/cardiology-explained.pdf"])
 
 # Initialize Groq model
 llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
@@ -56,12 +56,12 @@ client = qdrant_client.QdrantClient(
 )
 
 # Initialize vector store and storage context
-vector_store = QdrantVectorStore(client=client, collection_name="legal_documents")
+vector_store = QdrantVectorStore(client=client, collection_name="health_documents")
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
 # Build index from documents
-index = VectorStoreIndex.from_documents(documents=llama_parse_documents, storage_context=storage_context, show_progress=True)
-
+# index = VectorStoreIndex.from_documents(documents=llama_parse_documents, storage_context=storage_context, show_progress=True)
+index= VectorStoreIndex.from_vector_store(vector_store=vector_store)
 # Initialize retriever with k=3 for search
 retriever = index.as_retriever(search_kwargs={"k": 3})
 
@@ -115,11 +115,13 @@ class GraphState(TypedDict):
     generation: str
     web_search: str
     documents: List[str]
+    urls: List[str]
 
 # Define generate function for StateGraph
 def generate(state):
     question = state["question"]
     documents = state.get("documents", [])
+    urls = state.get("urls", [])
 
     # Query engine for retrieving documents
     query_engine = index.as_query_engine()
@@ -132,13 +134,13 @@ def generate(state):
 
     if score['score'] == 'yes':
         print("CONTEXT RESPONSE IS OK")
-        return {"documents": documents, "question": question, "generation": generation}
+        return {"urls": urls, "question": question, "generation": generation}
 
     print("DOING WEB SEARCH")
     while score['score'] == 'no':
         try:
+            urls = []
             docs = web_search_tool.invoke({"query": question})
-            print(docs)
             if docs:
                 web_results = "\n".join([d["content"] for d in docs])
                 web_results = Document(page_content=web_results)
@@ -146,20 +148,21 @@ def generate(state):
                     documents.append(web_results)
                 else:
                     documents = [web_results]
-
+                urls.extend(d["url"] for d in docs)
                 generation = rag_chain.invoke({"context": format_docs(documents), "question": question})
                 print("GENERATING FROM WEB_SEARCH")
 
                 score = answer_grader.invoke({"question": question, "generation": generation})
                 if score['score'] == 'yes':
                     print("WEB SEARCH RESULT IS OK")
-                    return {"documents": documents, "question": question, "generation": generation}
+                    return {"documents": documents, "urls": urls, "question": question, "generation": generation}
             else:
                 print("WEB SEARCH RETURNED NO RESULTS")
-                return {"documents": documents, "question": question, "generation": "Sorry, I couldn't find any information."}
+                return {"documents": documents, "urls": urls, "question": question, "generation": "Sorry, I couldn't find any information."}
         except Exception as e:
             print(f"WEB SEARCH FAILED: {e}")
-            return {"documents": documents, "question": question, "generation": "Sorry, an error occurred during the web search."}
+            return {"documents": documents, "urls": urls, "question": question, "generation": "Sorry, an error occurred during the web search."}
+
 # Initialize StateGraph workflow
 workflow = StateGraph(GraphState)
 workflow.add_node("generate", generate)
@@ -176,13 +179,29 @@ def query():
     question = data['question']
     print(f"Received question: {question}")
     inputs = {"question": question}
-    output = None
+    value = None
+
     for output in app.stream(inputs):
-        for key, value in output.items():
+        for key, val in output.items():
             print(f"Finished running: {key}")
-    print(f"Generated answer: {value['generation']}")
-    return jsonify({"generation": value["generation"]})
+            value = val  # Update value to the latest output
+    if value is None:
+        # Handle case where no valid output was generated
+        response = {"generation": "No answer generated", "urls": []}
+    else:
+        print(f"Generated answer: {value.get('generation', 'No generation found')}")
+        
+        # Safely get urls from the value dictionary
+        urls = value.get('urls', [])
+        print(f"Reference sites: {urls}")
+        
+        response = {"generation": value.get("generation", "No generation found"), "urls": urls}
+    
+    return jsonify(response)
+
+
+
 
 # Main entry point of the application
 if __name__ == "__main__":
-    server_app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5000)
+    server_app.run(debug=True, use_reloader=True, host='0.0.0.0', port=5000)
