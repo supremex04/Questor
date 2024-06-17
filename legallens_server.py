@@ -74,12 +74,12 @@ llm = ChatGroq(
 
 # Generation prompt template
 generation_prompt = PromptTemplate(
-    template="""You are an assistant for question-answering tasks. Only
-    Use the following pieces of retrieved context to answer the question. If context does not provide information to answer that question, just say user to do web search.
-    If the context provides needed information to answer the question, use it to answer the question keeping the answer concise. user
+    template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> You are an assistant for question-answering tasks.Only
+    Use the following pieces of retrieved context to answer the question.If context doesnot provide information to answer that question, just say user to do web search.
+    If you find it,try to explain the answer keeping the answer concise. <|eot_id|><|start_header_id|>user<|end_header_id|>
     Question: {question}
     Context: {context}
-    Answer: assistant""",
+    Answer: <|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
     input_variables=["question", "document"],
 )
 
@@ -92,14 +92,14 @@ rag_chain = generation_prompt | llm | StrOutputParser()
 
 # Answer grading prompt template
 grading_prompt = PromptTemplate(
-    template="""system You are a grader assessing whether an
-    answer is useful to resolve a question. Give a score 'yes' or 'no' to indicate whether the answer is
-    useful to resolve a question. Provide the binary score as a JSON with a single key 'score' and no preamble or explanation.
-    user Here is the answer:
+    template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> You are a grader assessing whether
+    a generation of a llm answers the given question or not. Give a  score 'yes' or 'no' to indicate whether the question is
+    fully answered or not. Provide the binary score as a JSON with a single key 'score' and no preamble or explanation.
+     <|eot_id|><|start_header_id|>user<|end_header_id|> Here is the answer:
     \n ------- \n
     {generation}
     \n ------- \n
-    Here is the question: {question} assistant""",
+    Here is the question: {question} <|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
     input_variables=["generation", "question"],
 )
 
