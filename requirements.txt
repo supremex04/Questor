@@ -7,6 +7,7 @@ nest-asyncio
 # LangChain and related libraries
 langchain-nomic
 langchain_community
+llama-index-embeddings-langchain
 tiktoken
 langchainhub
 langchain
@@ -18,12 +19,13 @@ llama-index-llms-groq
 llama-index-embeddings-fastembed
 llama-index-vector-stores-qdrant
 qdrant-client
+langchain-groq
 
 # Google and gRPC libraries
-protobuf==3.20.1
-google-api-python-client==2.44.0
-google-cloud-storage==2.5.0
-grpcio==1.44.0
+protobuf
+google-api-python-client
+google-cloud-storage
+grpcio
 
 # Other dependencies
 typing-extensions
