@@ -7,7 +7,7 @@ const QueryComponent = () => {
     const [loading, setLoading] = useState(false);
 
     const addHistory = (question, answer) => {
-        setHistory((prevHistory) => [...prevHistory, { question, answer }]);
+        setHistory((prevHistory) => [ { question, answer }, ...prevHistory]);
     };
 
     return (
