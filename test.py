@@ -136,19 +136,30 @@ def generate(state):
 
     print("DOING WEB SEARCH")
     while score['score'] == 'no':
-        docs = web_search_tool.invoke({"query": question})
-        web_results = "\n".join([d["content"] for d in docs])
-        web_results = Document(page_content=web_results)
-        documents.append(web_results)
+        try:
+            docs = web_search_tool.invoke({"query": question})
+            print(docs)
+            if docs:
+                web_results = "\n".join([d["content"] for d in docs])
+                web_results = Document(page_content=web_results)
+                if documents is not None:
+                    documents.append(web_results)
+                else:
+                    documents = [web_results]
 
-        generation = rag_chain.invoke({"context": format_docs(documents), "question": question})
-        print("GENERATING FROM WEB_SEARCH")
-        
-        score = answer_grader.invoke({"question": question, "generation": generation})
-        if score['score'] == 'yes':
-            print("WEB SEARCH RESULT IS OK")
-            return {"documents": documents, "question": question, "generation": generation}
+                generation = rag_chain.invoke({"context": format_docs(documents), "question": question})
+                print("GENERATING FROM WEB_SEARCH")
 
+                score = answer_grader.invoke({"question": question, "generation": generation})
+                if score['score'] == 'yes':
+                    print("WEB SEARCH RESULT IS OK")
+                    return {"documents": documents, "question": question, "generation": generation}
+            else:
+                print("WEB SEARCH RETURNED NO RESULTS")
+                return {"documents": documents, "question": question, "generation": "Sorry, I couldn't find any information."}
+        except Exception as e:
+            print(f"WEB SEARCH FAILED: {e}")
+            return {"documents": documents, "question": question, "generation": "Sorry, an error occurred during the web search."}
 # Initialize StateGraph workflow
 workflow = StateGraph(GraphState)
 workflow.add_node("generate", generate)
