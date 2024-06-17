@@ -40,7 +40,7 @@ os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 
 # Initialize LlamaParse with API key and load documents
 from llama_parse import LlamaParse
-llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf"])
+llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/legallens/Constitution-of-Nepal.pdf", "./context/legallens/Nepal-Citizenship-Act-2063-2006.pdf"])
 
 # Initialize Groq model
 llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
@@ -74,12 +74,12 @@ llm = ChatGroq(
 
 # Generation prompt template
 generation_prompt = PromptTemplate(
-    template="""system You are an assistant for question-answering tasks. Only
-    Use the following pieces of retrieved context to answer the question. If context does not provide information to answer that question, just say user to do web search.
-    If the context provides needed information to answer the question, use it to answer the question keeping the answer concise. user
+    template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> You are an assistant for question-answering tasks.Only
+    Use the following pieces of retrieved context to answer the question.If context doesnot provide information to answer that question, just say user to do web search.
+    If you find it,try to explain the answer keeping the answer concise. <|eot_id|><|start_header_id|>user<|end_header_id|>
     Question: {question}
     Context: {context}
-    Answer: assistant""",
+    Answer: <|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
     input_variables=["question", "document"],
 )
 
@@ -92,14 +92,14 @@ rag_chain = generation_prompt | llm | StrOutputParser()
 
 # Answer grading prompt template
 grading_prompt = PromptTemplate(
-    template="""system You are a grader assessing whether an
-    answer is useful to resolve a question. Give a score 'yes' or 'no' to indicate whether the answer is
+    template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> You are a grader assessing whether an
+    answer is useful to resolve a question. Give a  score 'yes' or 'no' to indicate whether the answer is
     useful to resolve a question. Provide the binary score as a JSON with a single key 'score' and no preamble or explanation.
-    user Here is the answer:
+     <|eot_id|><|start_header_id|>user<|end_header_id|> Here is the answer:
     \n ------- \n
     {generation}
     \n ------- \n
-    Here is the question: {question} assistant""",
+    Here is the question: {question} <|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
     input_variables=["generation", "question"],
 )
 

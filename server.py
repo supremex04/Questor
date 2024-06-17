@@ -74,7 +74,7 @@ llm = ChatGroq(
 
 # Generation prompt template
 generation_prompt = PromptTemplate(
-    template="""system You are an assistant for question-answering tasks. Only
+    template="""You are an assistant for question-answering tasks. Only
     Use the following pieces of retrieved context to answer the question. If context does not provide information to answer that question, just say user to do web search.
     If the context provides needed information to answer the question, use it to answer the question keeping the answer concise. user
     Question: {question}
