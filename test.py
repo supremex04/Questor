@@ -40,10 +40,10 @@ os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 
 # Initialize LlamaParse with API key and load documents
 from llama_parse import LlamaParse
-llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data("./context/legal/Constitution-of-Nepal.pdf")
+llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/legal/Constitution-of-Nepal.pdf", "./context/legal/Nepal-Citizenship-Act-2063-2006.pdf"])
 
 # Initialize Groq model
-llm1 = Groq(model="mixtral-8x7b-32768", api_key=os.getenv("GROQ_API_KEY"))
+llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
 
 # Set settings for llm and embed_model
 Settings.llm = llm1
@@ -68,7 +68,7 @@ retriever = index.as_retriever(search_kwargs={"k": 3})
 # Initialize ChatGroq for question answering
 llm = ChatGroq(
     temperature=0,
-    model="mixtral-8x7b-32768",
+    model="Llama3-8b-8192",
     api_key=os.getenv("GROQ_API_KEY")
 )
 
