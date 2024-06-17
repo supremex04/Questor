@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-from dotenv import load_dotenv 
-
+from dotenv import load_dotenv
 from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
@@ -10,15 +9,12 @@ from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.graph import StateGraph
 from langchain.schema import Document
-
 from llama_index.llms.groq import Groq
 from llama_index.core import Settings, VectorStoreIndex, StorageContext
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 import qdrant_client
-
 from typing_extensions import TypedDict
 from typing import List
-from pprint import pprint
 import nest_asyncio
 
 # Load environment variables from .env file
@@ -27,9 +23,9 @@ load_dotenv()
 # Initialize FastEmbedEmbeddings model
 embed_model = FastEmbedEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
-# Initialize Flask app
+# Initialize Flask app and enable CORS
 server_app = Flask(__name__)
-CORS(server_app) 
+CORS(server_app)
 
 # Apply nest_asyncio to enable async within Flask
 nest_asyncio.apply()
@@ -167,14 +163,15 @@ app = workflow.compile()
 def query():
     data = request.json
     question = data['question']
+    print(f"Received question: {question}")
     inputs = {"question": question}
     output = None
     for output in app.stream(inputs):
         for key, value in output.items():
-            pprint(f"Finished running: {key}:")
-    pprint(value["generation"])
+            print(f"Finished running: {key}")
+    print(f"Generated answer: {value['generation']}")
     return jsonify({"generation": value["generation"]})
 
 # Main entry point of the application
 if __name__ == "__main__":
-    server_app.run(debug=True)
+    server_app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5000)
