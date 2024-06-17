@@ -120,6 +120,7 @@ class GraphState(TypedDict):
 def generate(state):
     question = state["question"]
     documents = state.get("documents", [])
+    urls = state.get("urls", [])
 
     # Query engine for retrieving documents
     query_engine = index.as_query_engine()
@@ -132,13 +133,13 @@ def generate(state):
 
     if score['score'] == 'yes':
         print("CONTEXT RESPONSE IS OK")
-        return {"documents": documents, "question": question, "generation": generation}
+        return {"documents": documents,"urls": urls, "question": question, "generation": generation}
 
     print("DOING WEB SEARCH")
     while score['score'] == 'no':
         try:
             docs = web_search_tool.invoke({"query": question})
-            print(docs)
+            # print(docs)
             if docs:
                 web_results = "\n".join([d["content"] for d in docs])
                 web_results = Document(page_content=web_results)
@@ -146,20 +147,22 @@ def generate(state):
                     documents.append(web_results)
                 else:
                     documents = [web_results]
-
+                urls.extend([d["url"] for d in docs])
+                # print(urls)
                 generation = rag_chain.invoke({"context": format_docs(documents), "question": question})
                 print("GENERATING FROM WEB_SEARCH")
 
                 score = answer_grader.invoke({"question": question, "generation": generation})
                 if score['score'] == 'yes':
                     print("WEB SEARCH RESULT IS OK")
-                    return {"documents": documents, "question": question, "generation": generation}
+                    print(urls)
+                    return {"urls": urls, "question": question, "generation": generation}
             else:
                 print("WEB SEARCH RETURNED NO RESULTS")
-                return {"documents": documents, "question": question, "generation": "Sorry, I couldn't find any information."}
+                return {"documents": documents, "urls": urls, "question": question, "generation": "Sorry, I couldn't find any information."}
         except Exception as e:
             print(f"WEB SEARCH FAILED: {e}")
-            return {"documents": documents, "question": question, "generation": "Sorry, an error occurred during the web search."}
+            return {"documents": documents, "urls": urls, "question": question, "generation": "Sorry, an error occurred during the web search."}
 # Initialize StateGraph workflow
 workflow = StateGraph(GraphState)
 workflow.add_node("generate", generate)
@@ -176,12 +179,28 @@ def query():
     question = data['question']
     print(f"Received question: {question}")
     inputs = {"question": question}
+    value = None
     output = None
     for output in app.stream(inputs):
-        for key, value in output.items():
+        for key, val in output.items():
             print(f"Finished running: {key}")
-    print(f"Generated answer: {value['generation']}")
-    return jsonify({"generation": value["generation"]})
+            value = val  # Update value to the latest output
+    
+    if value is None:
+        # Handle case where no valid output was generated
+        response = {"generation": "No answer generated", "urls": []}
+    else:
+        # print(f"Generated answer: {value.get('generation', 'No generation found')}")
+        print(value)
+        # Safely get urls from the value dictionary
+        urls = value.get('urls', [])
+        print(f"Reference sites: {urls}")
+        
+        response = {"generation": value.get("generation", "No generation found"), "urls": urls}
+    
+    return jsonify(response)
+
+
 
 # Main entry point of the application
 if __name__ == "__main__":
