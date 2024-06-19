@@ -51,7 +51,7 @@ Settings.embed_model = embed_model
 
 # Initialize QdrantClient for vector store
 client = qdrant_client.QdrantClient(
-    "https://50cbf064-6aca-4b34-aa82-c29c083c2430.us-east4-0.gcp.cloud.qdrant.io",
+    "https://b28f151a-b950-461a-92ba-8094252908b9.us-east4-0.gcp.cloud.qdrant.io",
     api_key=os.getenv("QDRANT_API_KEY")
 )
 
