@@ -18,7 +18,7 @@ const Answer = ({ history, loading }) => {
                                 )}
                             </div>
                             <div>
-                                <p className="mb-2 font-semibold text-xl ">{item.question}</p>
+                                <p className="mb-2 font-semibold text-xl">{item.question}</p>
                                 <div className="text-left text-gray-200" dangerouslySetInnerHTML={{ __html: item.answer }}></div>
                                 {item.urls && item.urls.length > 0 && (
                                     <div className="url-list">
