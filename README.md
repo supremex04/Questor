@@ -10,7 +10,7 @@
 
 
 ### Why Questor?
-There are various ways a person can access information from the internet.
+There are various ways a person can access information from the internet. The traditional Google Search is highly effiecient in fetching relevant web pages based on user keyword but doesn't understand the actual context/meaning of the search query. Transformer based LLM search is also getting popular lately. But LLM's performance starts degrading as we narrow down the domain field and give more domain specific prompts
 
 
 ### Tech Stack
