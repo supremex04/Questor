@@ -40,7 +40,7 @@ os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 
 # Initialize LlamaParse with API key and load documents
 from llama_parse import LlamaParse
-# llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf", "./context/medilens/cardiology-explained.pdf"])
+llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf", "./context/medilens/cardiology-explained.pdf"])
 
 # Initialize Groq model
 llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
@@ -51,7 +51,7 @@ Settings.embed_model = embed_model
 
 # Initialize QdrantClient for vector store
 client = qdrant_client.QdrantClient(
-    "https://b28f151a-b950-461a-92ba-8094252908b9.us-east4-0.gcp.cloud.qdrant.io",
+    "https://50cbf064-6aca-4b34-aa82-c29c083c2430.us-east4-0.gcp.cloud.qdrant.io",
     api_key=os.getenv("QDRANT_API_KEY")
 )
 
@@ -60,8 +60,8 @@ vector_store = QdrantVectorStore(client=client, collection_name="health_document
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
 # Build index from documents
-# index = VectorStoreIndex.from_documents(documents=llama_parse_documents, storage_context=storage_context, show_progress=True)
-index= VectorStoreIndex.from_vector_store(vector_store=vector_store)
+index = VectorStoreIndex.from_documents(documents=llama_parse_documents, storage_context=storage_context, show_progress=True)
+#index= VectorStoreIndex.from_vector_store(vector_store=vector_store)
 # Initialize retriever with k=3 for search
 retriever = index.as_retriever(search_kwargs={"k": 3})
 
