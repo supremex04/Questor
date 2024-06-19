@@ -23,7 +23,7 @@ const Answer = ({ history, loading }) => {
                                 {item.urls && item.urls.length > 0 && (
                                     <div className="url-list">
                                         <p className="text-left text-sm font-semibold">References:</p>
-                                        <ul className="text-sm list-disc">
+                                        <ul className="text-sm mt-2 list-disc">
                                             {item.urls.map((url, urlIndex) => (
                                                 <li key={urlIndex} className="text-left">
                                                     <a href={url} className="text-blue-400" target="_blank" rel="noopener noreferrer">{url}</a>
