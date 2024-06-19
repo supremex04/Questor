@@ -2,7 +2,7 @@
 
 ### Contents:
 - [Introduction](https://github.com/supremex04/contextual-search?tab=readme-ov-file#introduction)
-- [Why PhysioNep?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#why-questor)
+- [Why Questor?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#why-questor)
 - [How to run locally?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#how-to-run-locally)
 
 ### Introduction
