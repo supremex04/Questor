@@ -43,7 +43,7 @@ On the project folder:
 
 
 
-Run server:
+Run servers:
 > ```python3 medilens_server.py```
 > ```python3 legallens_server.py```
 
