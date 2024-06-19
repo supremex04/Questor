@@ -31,27 +31,27 @@ Questor is a domain-specific search engine designed to provide precise and relev
 
 ![Alt text](web/src/assets/workflow.png)
 
-1.Context Sources
-To ensure accuracy and reliability, Questor uses authoritative and widely accepted sources to enhance the knowledge of the language model (LLM) for each domain:
-Health Domain (Cardio-Vascular):
- Davidson's Medicine
-Legal Domain:
- The Constitution of Nepal
- Various other legal acts and documents
+**Context Sources**
+- To ensure accuracy and reliability, Questor uses authoritative and widely accepted sources to enhance the knowledge of the language model (LLM) for each domain:
+  - Health Domain (Cardio-Vascular):
+    - Davidson's Medicine
+  - Legal Domain:
+    - The Constitution of Nepal
+    - Various other legal acts and documents
  
-2.Context Parsing:
-Relevant information from the selected sources is parsed into multiple chunks using llama Parse from llamaIndex.
-These chunks are stored in Qdrant as embeddings (numerical vector representations of text).
-Each chunk is assigned an index.
+**Context Parsing**
+- Relevant information from the selected sources is parsed into multiple chunks using llama Parse from llamaIndex.
+- These chunks are stored in Qdrant as embeddings (numerical vector representations of text).
+- Each chunk is assigned an index.
 
-3.Query Processing:
-When a search query is made, Meta's Open Source Model llama3 retrieves the relevant context chunks from Qdrant.
-The generator then provides an answer based on these retrieved chunks.
+**Query Processing**
+- When a search query is made, Meta's Open Source Model llama3 retrieves the relevant context chunks from Qdrant.
+- The generator then provides an answer based on these retrieved chunks.
 
-4.Answer Grading:
-The generated answer is graded by Answer Grader (another agent/LLM).
-If the answer is relevant, it is provided as the final response.
-If the answer is not relevant, Tavily AI performs a web search to fetch the necessary context to answer the question.
+**Answer Grading**
+- The generated answer is graded by Answer Grader (another agent/LLM).
+- If the answer is relevant, it is provided as the final response.
+- If the answer is not relevant, Tavily AI performs a web search to fetch the necessary context to answer the question.
 
 
 
