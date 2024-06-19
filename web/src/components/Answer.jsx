@@ -19,9 +19,19 @@ const Answer = ({ history, loading }) => {
                             </div>
                             <div>
                                 <p className="mb-2 font-semibold text-xl">{item.question}</p>
-                                <p className="text-left text-gray-200">{item.answer}</p>
+                                <div className="text-left text-gray-200">
+                                    {Array.isArray(item.answer) ? (
+                                        <ul className="list-disc list-inside">
+                                            {item.answer.map((point, i) => (
+                                                <li key={i}>{point}</li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p>{item.answer}</p>
+                                    )}
+                                </div>
                                 {item.urls && item.urls.length > 0 && (
-                                    <ul className="url-list text-sm">
+                                    <ul className="url-list text-sm mt-2 list-disc" >
                                         {item.urls.map((url, urlIndex) => (
                                             <li key={urlIndex} className="text-left">
                                                 <a href={url} className="text-blue-400" target="_blank" rel="noopener noreferrer">{url}</a>
