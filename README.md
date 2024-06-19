@@ -3,7 +3,7 @@
 ### Contents:
 - [Introduction](https://github.com/supremex04/contextual-search?tab=readme-ov-file#introduction)
 - [Why Questor?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#why-questor)
-- [Tech Stack](https://github.com/supremex04/contextual-search?tab=readme-ov-file#tech-stack)
+- [How Questor Works?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#how-questor-works)
 - [How to run locally?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#how-to-run-locally)
 
 ### Introduction
