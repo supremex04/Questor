@@ -17,11 +17,11 @@ const Search = ({ addHistory, setLoading }) => {
         setLoading(true);
         try {
             const response = await axios.post('http://localhost:5000/query', { question });
-            const answer = response.data.generation;
-            addHistory(question, answer);
+            const { generation: answer, urls } = response.data;
+            addHistory(question, answer, urls);
         } catch (error) {
             console.error("There was an error submitting the question!", error);
-            addHistory(question, 'There was an error processing your request. Please try again.');
+            addHistory(question, 'There was an error processing your request. Please try again.', []);
         } finally {
             setLoading(false);
         }

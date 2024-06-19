@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook, faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 const Answer = ({ history, loading }) => {
     return (
@@ -7,13 +9,26 @@ const Answer = ({ history, loading }) => {
             {history.length > 0 ? (
                 <div className="flex flex-col space-y-4 w-full max-w-4xl">
                     {history.map((item, index) => (
-                        <div key={index} className="bg-gray-800 p-4 rounded-2xl shadow-lg transition transform hover:scale-101 duration-200">
-                            <div className="mb-4">
-                                {/* <h3 className="text-lg font-semibold">Question:</h3> */}
+                        <div key={index} className="relative bg-gray-800 p-4 rounded-2xl shadow-lg transition transform hover:scale-101 duration-200">
+                            <div className="icon-container">
+                                {item.urls && item.urls.length > 0 ? (
+                                    <FontAwesomeIcon icon={faGlobe} className="icon text-blue-500" />
+                                ) : (
+                                    <FontAwesomeIcon icon={faBook} className="icon text-blue-500" />
+                                )}
+                            </div>
+                            <div>
                                 <p className="mb-2 font-semibold text-xl">{item.question}</p>
-                                {/* <h3 className="text-lg font-semibold">Answer:</h3> */}
                                 <p className="text-left text-gray-200">{item.answer}</p>
-
+                                {item.urls && item.urls.length > 0 && (
+                                    <ul className="url-list text-sm">
+                                        {item.urls.map((url, urlIndex) => (
+                                            <li key={urlIndex} className="text-left">
+                                                <a href={url} className="text-blue-400" target="_blank" rel="noopener noreferrer">{url}</a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     ))}

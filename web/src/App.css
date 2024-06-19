@@ -36,3 +36,34 @@
     transform: rotate(360deg);
   }
 }
+.icon-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.icon {
+  font-size: 1.5rem; /* Adjust the size as needed */
+}
+
+.url-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.url-list li {
+  text-align: left;
+  margin-bottom: 4px; /* Optional: Add some space between the URLs */
+}
+
+.url-list a {
+  text-decoration: none;
+  color: #1e90ff; /* Change to your preferred color */
+  font-size: 0.875rem; /* Adjust font size as needed */
+}
+
+.url-list a:hover {
+  text-decoration: underline;
+}
+

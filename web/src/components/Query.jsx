@@ -6,8 +6,8 @@ const QueryComponent = () => {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const addHistory = (question, answer) => {
-        setHistory((prevHistory) => [ { question, answer }, ...prevHistory]);
+    const addHistory = (question, answer, urls) => {
+        setHistory((prevHistory) => [{ question, answer, urls }, ...prevHistory]);
     };
 
     return (
