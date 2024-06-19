@@ -21,7 +21,7 @@ const Logo = () => {
                     <line x1="60" y1="30" x2="45" y2="55" stroke="#16A34A" strokeWidth="2" />
                 </svg>
             </div>
-            <div className="text-2xl font-semibold text-white">DocDive</div>
+            <div className="text-2xl font-semibold text-white">Questor</div>
         </div>
     );
 };
