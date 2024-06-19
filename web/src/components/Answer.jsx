@@ -17,9 +17,21 @@ const Answer = ({ history, loading }) => {
                                     <FontAwesomeIcon icon={faBook} className="icon text-blue-500" />
                                 )}
                             </div>
-                            <div className="flex items-start space-x-2 pr-10 mb-4">
-                                <FontAwesomeIcon icon={faSearch} className="text-blue-500 mt-1" />
-                                <p className="mb-2 font-semibold text-left">{item.question}</p>
+                            <div>
+                                <p className="mb-2 font-semibold text-xl ">{item.question}</p>
+                                <div className="text-left text-gray-200" dangerouslySetInnerHTML={{ __html: item.answer }}></div>
+                                {item.urls && item.urls.length > 0 && (
+                                    <div className="url-list">
+                                        <p className="text-left text-sm font-semibold">References:</p>
+                                        <ul className="text-sm mt-2 list-disc">
+                                            {item.urls.map((url, urlIndex) => (
+                                                <li key={urlIndex} className="text-left">
+                                                    <a href={url} className="text-blue-400" target="_blank" rel="noopener noreferrer">{url}</a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                             <div className="flex items-start space-x-2 pr-10 mb-6">
                                 <FontAwesomeIcon icon={faLightbulb} className="text-yellow-500 mt-1" />

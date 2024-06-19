@@ -37,18 +37,16 @@ os.environ['LANGCHAIN_TRACING-V2'] = 'true'
 os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
 os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")
 os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
-
 # Initialize LlamaParse with API key and load documents
 from llama_parse import LlamaParse
 # llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf", "./context/medilens/cardiology-explained.pdf"])
 
 # Initialize Groq model
-llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
+llm1 = Groq(model="Llama3-70b-8192", api_key=os.getenv("GROQ_API_KEY"))
 
 # Set settings for llm and embed_model
 Settings.llm = llm1
 Settings.embed_model = embed_model
-
 # Initialize QdrantClient for vector store
 client = qdrant_client.QdrantClient(
     "https://b28f151a-b950-461a-92ba-8094252908b9.us-east4-0.gcp.cloud.qdrant.io",
@@ -68,7 +66,7 @@ retriever = index.as_retriever(search_kwargs={"k": 3})
 # Initialize ChatGroq for question answering
 llm = ChatGroq(
     temperature=0,
-    model="Llama3-8b-8192",
+    model="Llama3-70b-8192",
     api_key=os.getenv("GROQ_API_KEY")
 )
 
@@ -204,4 +202,4 @@ def query():
 
 # Main entry point of the application
 if __name__ == "__main__":
-    server_app.run(debug=True, use_reloader=True, host='0.0.0.0', port=5000)
+    server_app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5000)
