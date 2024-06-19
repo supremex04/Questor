@@ -29,9 +29,10 @@ Questor is a domain-specific search engine designed to provide precise and relev
 
 
 ### How Questor Works?
+
 ![Alt text](web/src/assets/workflow.png)
 
-1. Context Sources
+1.Context Sources
 To ensure accuracy and reliability, Questor uses authoritative and widely accepted sources to enhance the knowledge of the language model (LLM) for each domain:
 Health Domain (Cardio-Vascular):
  Davidson's Medicine
