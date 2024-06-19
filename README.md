@@ -10,7 +10,7 @@
 
 
 ### Why Questor?
-
+There are various ways a person can access information from the internet.
 
 
 ### Tech Stack
