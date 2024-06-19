@@ -7,7 +7,7 @@
 - [How to run locally?](https://github.com/supremex04/contextual-search?tab=readme-ov-file#how-to-run-locally)
 
 ### Introduction
-Questor is a domain-specific search engine designed to provide precise and relevant information based on predefined contexts. Currently, it has been implemented for two domains: Health (specifically cardio-vascular) and Legal. It takes context specific natural language as input and provides relevant output using contextual and semantic searching.
+Questor is a domain-specific search engine designed to provide precise and relevant information based on predefined contexts. Currently, it has been implemented for two domains: Health (specifically cardio-vascular) and Legal. It takes domain-specific contexts as input and provides relevant output using contextual and semantic searching.
 
 ### Why Questor?
 - **Traditional Google Search**:
@@ -18,7 +18,7 @@ Questor is a domain-specific search engine designed to provide precise and relev
   - Performance degrades as the domain field is narrowed down.
   - Struggles with more domain-specific prompts.
 
-- **Questor Solution**:
+- **Questor's Solution**:
   - Extracts additional context from domain-specific PDF files.
   - Feeds this context to the LLM.
   - Utilizes the generative abilities of LLM to produce human-like text.
@@ -32,9 +32,9 @@ Questor is a domain-specific search engine designed to provide precise and relev
 ![Alt text](web/src/assets/workflow.png)
 
 **Context Sources**
-- To ensure accuracy and reliability, Questor uses authoritative and widely accepted sources to enhance the knowledge of the language model (LLM) for each domain:
+- To ensure accuracy and reliability, Questor uses authoritative and widely accepted context sources to enhance the knowledge of the language model (LLM) for each domain:
   - Health Domain (Cardio-Vascular):
-    - Davidson's Medicine
+    - Davidson's Medicine (a widely accepted reference book in the medical field)
   - Legal Domain:
     - The Constitution of Nepal
     - Various other legal acts and documents
