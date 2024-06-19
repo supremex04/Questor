@@ -1,4 +1,7 @@
-# Questor ![Alt text](web/src/assets/logo.png)
+<div style="display: flex; align-items: center;">
+  <img src="web/src/assets/logo.png" alt="Logo" style="margin-right: 10px;">
+  <span style="font-size: 24px;">Questor</span>
+</div>
 
 ### Contents:
 - [Introduction](https://github.com/supremex04/contextual-search?tab=readme-ov-file#introduction)
