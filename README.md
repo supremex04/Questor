@@ -10,7 +10,9 @@
 Questor is a domain-specific search engine designed to provide precise and relevant information based on predefined contexts. Currently, it has been implemented for two domains: Health (specifically cardio-vascular) and Legal. It takes context specific natural language as input and provides relevant output using contextual and semantic searching.
 
 ### Why Questor?
-There are various ways a person can access information from the internet. The traditional Google Search is highly effiecient in fetching relevant web pages based on user keyword but doesn't understand the actual context/meaning of the search query. Transformer based LLM search is also getting popular lately. But LLM's performance starts degrading as we narrow down the domain field and give more domain specific prompts
+The traditional Google Search is highly effiecient in fetching relevant web pages based on user keyword but doesn't understand the actual context/meaning of the search query. But on the other hand, LLM's performance starts degrading as we narrow down the domain field and give more domain specific prompts. So Questor solves this problem by extracting additional context from the domain specific pdf files and feeding this context to the LLM,thereby using the generative abilities of LLM to generate human like texts. Questor also can do web search if user prompt doesn't match with the information available in the 
+given pdf files
+
 
 
 ### Tech Stack
