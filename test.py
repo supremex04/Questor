@@ -195,7 +195,7 @@ def query():
         urls = value.get('urls', [])
         print(f"Reference sites: {urls}")
         
-        response = {"generation": value.get("generation", "No generation found"), "urls": urls}
+        response = {"generation": value.get("generation", "No generation found").replace("\n", "<br>"), "urls": urls}
     
     return jsonify(response)
 
