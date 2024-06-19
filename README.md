@@ -16,7 +16,7 @@ given pdf files
 
 
 ### Tech Stack
-
+![Alt text](web/src/assets/workflow.png)
 
 
 
