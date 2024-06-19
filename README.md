@@ -1,7 +1,4 @@
-<div style="display: flex; align-items: center;">
-  <img src="web/src/assets/logo.png" alt="Logo" style="margin-right: 10px; vertical-align: middle;">
-  <span style="font-size: 32px; font-weight: bold; vertical-align: middle;">Questor</span>
-</div>
+![Alt text](web/src/assets/logo.png) # Questor 
 
 
 ### Contents:
