@@ -16,7 +16,7 @@
 
 ## How to run locally?
 
-On the project folder
+On the project folder:
 
 > ``` npm install ```
 
