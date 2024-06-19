@@ -1,7 +1,8 @@
 <div style="display: flex; align-items: center;">
-  <img src="web/src/assets/logo.png" alt="Logo" style="margin-right: 10px;">
-  <span style="font-size: 24px;">Questor</span>
+  <img src="web/src/assets/logo.png" alt="Logo" style="margin-right: 10px; vertical-align: middle;">
+  <span style="font-size: 32px; font-weight: bold; vertical-align: middle;">Questor</span>
 </div>
+
 
 ### Contents:
 - [Introduction](https://github.com/supremex04/contextual-search?tab=readme-ov-file#introduction)
