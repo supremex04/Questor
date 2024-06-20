@@ -42,7 +42,7 @@ os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 # llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/legallens/Constitution-of-Nepal.pdf", "./context/legallens/Federal_Budget_2081_82.pdf","./context/legallens/budget1.pdf"])
 
 # Initialize Groq model
-llm1 = Groq(model="Llama3-8b-8192", api_key=os.getenv("GROQ_API_KEY"))
+llm1 = Groq(model="Llama3-70b-8192", api_key=os.getenv("GROQ_API_KEY"))
 
 # Set settings for llm and embed_model
 Settings.llm = llm1
@@ -66,7 +66,7 @@ retriever = index.as_retriever(search_kwargs={"k": 3})
 # Initialize ChatGroq for question answering
 llm = ChatGroq(
     temperature=0,
-    model="Llama3-8b-8192",
+    model="Llama3-70b-8192",
     api_key=os.getenv("GROQ_API_KEY")
 )
 
