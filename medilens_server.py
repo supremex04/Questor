@@ -38,8 +38,8 @@ os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
 os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")
 os.environ['TAVILY_API_KEY'] = os.getenv("TAVILY_API_KEY")
 # Initialize LlamaParse with API key and load documents
-from llama_parse import LlamaParse
-# llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./context/medilens/cardio_vascular.pdf", "./context/medilens/cardiology-explained.pdf"])
+# from llama_parse import LlamaParse
+# llama_parse_documents = LlamaParse(api_key=os.getenv("LLAMA_PARSE_API_KEY"), result_type="markdown").load_data(["./references/medilens/cardio_vascular2.pdf", "./references/medilens/cardiology-explained.pdf"])
 
 # Initialize Groq model
 llm1 = Groq(model="Llama3-70b-8192", api_key=os.getenv("GROQ_API_KEY"))
