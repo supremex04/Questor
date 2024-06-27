@@ -29,7 +29,7 @@ Questor is a domain-specific search engine designed to provide precise and relev
 
 ### How Questor Works?
 
-- [Project Demo](https://drive.google.com/drive/folders/1mftuTsoyZdc8Ei9J0n0geGKRDyYIjW8S?usp=drive_link)
+- [Project Demo](https://drive.google.com/file/d/1OhRetXL6bKpgIg8mbqsOOqM2vpE3LLlZ/view?usp=sharing)
 
 ![Alt text](web/src/assets/workflow.png)
 
